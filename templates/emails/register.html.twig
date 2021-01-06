@@ -1,0 +1,8 @@
+<h1>Bonjour ! Confirmer votre compte.</h1>
+
+<p>
+    Veuillez confirmer votre adresse e-mail en cliquant sur le lien suivant :
+    <br />
+    <br />
+    <a href="{{ url('app_register_check', { id: user.id, token: user.confirmationToken }) }}">Valider mon compte</a>
+</p>
