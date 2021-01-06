@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stadiums{% endblock %}
+
+{% block body %}
+    <h1>Les Stades</h1>
+    {% for stadium in stadiums %}
+        <div class="card col-md-3">
+            <img src="{{ asset('uploads/')}}{{ stadium.picture }}" class=" img-fluid card-img-top" alt="{{stadium.name}}">
+            <div class="card-body">
+                <h5 class="card-title">{{ stadium.name }}</h5>
+                <p class="card-text">
+                    {{ stadium.address }}
+                </p>
+                <a href="{{ path('stadium_show', {'id': stadium.id}) }}" class="btn btn-outline-info">Voir plus</a>
+                <a href="{{ path('stadium_edit', {'id': stadium.id}) }}" class="btn btn-outline-secondary">Modifier</a>
+            </div>
+        </div>
+    {% endfor %}
+   
+    <a href="{{ path('stadium_new') }}">Create new</a>
+{% endblock %}

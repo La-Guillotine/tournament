@@ -1,4 +1,7 @@
 body {
     background-color: white;
 }
+img{
+    object-fit: cover;
+}
 @import '~bootstrap/scss/bootstrap'

@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stadium{% endblock %}
+
+{% block body %}
+    <h1>Stadium</h1>
+
+    <div class="card container">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <img src="{{ asset('uploads/')}}{{ stadium.picture }}" class="img-fluid" alt="{{stadium.name}}">
+            </div>
+            <div class="card-body col-6">
+                <h3 class="card-title">{{ stadium.name }}</h3>
+                <p class="card-text">
+                    {{ stadium.address }}
+                </p>
+                <a href="{{ path('stadium_show', {'id': stadium.id}) }}" class="btn btn-outline-info">Voir plus</a>
+                <a href="{{ path('stadium_edit', {'id': stadium.id}) }}" class="btn btn-outline-secondary">Modifier</a>
+            </div>
+        </div>
+    </div>
+
+    <a href="{{ path('stadium_index') }}">back to list</a>
+
+    <a href="{{ path('stadium_edit', {'id': stadium.id}) }}">edit</a>
+
+    {{ include('stadium/_delete_form.html.twig') }}
+{% endblock %}
