@@ -3,11 +3,13 @@
 {% block title %}Stadiums{% endblock %}
 
 {% block body %}
-    <a class="btn btn-success" href="{{ path('stadium_new') }}">Nouveau stade</a>
-
-    <h1>Les Stades</h1>
+    {% if is_granted("ROLE_ADMIN") %}
+        <a class="btn btn-success m-2" href="{{ path('stadium_new') }}">Nouveau stade</a>
+    {% endif %}
+    
 
     <div class="container-fluid">
+        <h1>Les Stades</h1>
         <div class="row align-items-center justify-content-around">
         {% for stadium in stadiums %}
             <div class="card col col-md-3 col-sm-6 align-items-center">
@@ -19,7 +21,9 @@
                     </p>
 
                     <a href="{{ path('stadium_show', {'id': stadium.id}) }}" class="btn btn-outline-info">Voir plus</a>
-                    <a href="{{ path('stadium_edit', {'id': stadium.id}) }}" class="btn btn-outline-secondary">Modifier</a>
+                    {% if is_granted("ROLE_ADMIN") %}
+                        <a href="{{ path('stadium_edit', {'id': stadium.id}) }}" class="btn btn-outline-secondary">Modifier</a>
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}
