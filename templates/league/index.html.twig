@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}League index{% endblock %}
+
+{% block body %}
+   {% if is_granted("ROLE_ADMIN") %}
+        <a class="btn btn-success m-2" href="{{ path('league_new') }}">Nouvelle ligue</a>
+    {% endif %}
+    
+
+    <div class="container-fluid">
+        <h1>Les Ligues</h1>
+        <div class="row align-items-center justify-content-around">
+        {% for league in leagues %}
+            <div class="card col col-md-3 col-sm-6 align-items-center">
+                <div class="card-body">
+                    <h5 class="card-title">{{ league.name }}</h5>
+                    <p class="card-text">
+                        {{ league.address }}
+                    </p>
+                    <p>
+                        <a class="card-link" target="_new" href="{{ league.website }}">Lien vers le site</a>
+                    </p>
+                    <p>
+                        <b>Responsable : </b>
+                        {{ league.responsible.fullName }}
+                    </p>
+
+                    <a href="{{ path('league_show', {'id': league.id}) }}" class="btn btn-outline-info">Voir plus</a>
+                    {% if (is_granted("ROLE_ADMIN") or league.getResponsible == app.user) %}
+                        <a href="{{ path('league_edit', {'id': league.id}) }}" class="btn btn-outline-secondary">Modifier</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+{% endblock %}

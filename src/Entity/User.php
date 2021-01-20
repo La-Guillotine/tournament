@@ -65,6 +65,16 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $resetPasswordToken;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $firstName;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $lastName;
     
     public function getId(): ?int
     {
@@ -205,6 +215,35 @@ class User implements UserInterface
     public function setResetPasswordToken(?string $resetPasswordToken): self
     {
         $this->resetPasswordToken = $resetPasswordToken;
+
+        return $this;
+    }
+
+    public function getFullName(): string
+    {
+        return $this->firstName . ' ' . $this->lastName;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(string $firstName): self
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(string $lastName): self
+    {
+        $this->lastName = $lastName;
 
         return $this;
     }
