@@ -4,4 +4,4 @@ body {
 img{
     object-fit: cover;
 }
-@import '~bootstrap/scss/bootstrap'
+@import "../../node_modules/bootstrap"

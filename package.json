@@ -2,7 +2,7 @@
     "devDependencies": {
         "@symfony/stimulus-bridge": "^1.1.0",
         "@symfony/webpack-encore": "^0.32.0",
-        "bootstrap": "^4.5.3",
+        "bootstrap": "^4.6.0",
         "core-js": "^3.0.0",
         "jquery": "^3.5.1",
         "node-sass": "^5.0.0",
@@ -10,7 +10,8 @@
         "regenerator-runtime": "^0.13.2",
         "sass-loader": "^8.0.0",
         "stimulus": "^2.0.0",
-        "webpack-notifier": "^1.6.0"
+        "webpack-notifier": "^1.6.0",
+        "@symfony/ux-dropzone": "file:vendor/symfony/ux-dropzone/Resources/assets"
     },
     "license": "UNLICENSED",
     "private": true,

@@ -90,6 +90,16 @@ class StadiumController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $picture = $request->files->get('stadium')['picture'];
+            if($picture !== null){
+                $this->fileUploader->removeUpload($stadium->getPicture());
+                //sauvegarde de l'image grâce au service FileUploader
+                $fileName = $this->fileUploader->upload($picture);
+                    
+                $stadium->setPicture($fileName);
+            }
+           
             $this->entityManager->flush();
 
             return $this->redirectToRoute('stadium_index');
@@ -107,6 +117,7 @@ class StadiumController extends AbstractController
     public function delete(Request $request, Stadium $stadium): Response
     {
         if ($this->isCsrfTokenValid('delete'.$stadium->getId(), $request->request->get('_token'))) {
+            $this->fileUploader->removeUpload($stadium->getPicture());
             $this->entityManager->remove($stadium);
             $this->entityManager->flush();
         }
