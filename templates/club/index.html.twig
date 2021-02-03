@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Club index{% endblock %}
+
+{% block body %}
+    {% if league %}
+        <a class="btn btn-outline-success m-2" href="{{ path('club_new') }}">Nouveau club</a>
+    {% endif %}
+    
+
+    <div class="container-fluid">
+        <h1>Les Clubs</h1>
+        <div class="row align-items-center justify-content-around">
+        {% for club in clubs %}
+            <div class="card col col-md-3 col-sm-6 align-items-center">
+                <img src="{{ asset('uploads/logo')}}{{ club.logo }}" class=" img-fluid card-img-top" alt="{{club.name}}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ club.name }}</h5>
+                    <p class="card-text">
+                        {{ club.address }}
+                    </p>
+                     <p>
+                        <a class="card-link" target="_new" href="{{ club.website }}">Lien vers le site</a>
+                    </p>
+                    <p>
+                        <b>Responsable : </b>
+                        {{ club.secretary.first_name }}
+                    </p>
+                    <a href="{{ path('club_show', {'id': club.id}) }}" class="btn btn-outline-info">Voir plus</a>
+                    {% if is_granted("ROLE_ADMIN") %}
+                        <a href="{{ path('club_edit', {'id': club.id}) }}" class="btn btn-outline-secondary">Modifier</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+{% endblock %}

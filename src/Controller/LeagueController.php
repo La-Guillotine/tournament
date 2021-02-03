@@ -42,6 +42,11 @@ class LeagueController extends AbstractController
             $entityManager->persist($league);
             $entityManager->flush();
 
+            $this->addFlash(
+                "success",
+                "La Ligue a bien été ajoutée"
+            );
+
             return $this->redirectToRoute('league_index');
         }
 

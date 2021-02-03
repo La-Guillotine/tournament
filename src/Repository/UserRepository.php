@@ -39,19 +39,30 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     // /**
     //  * @return User[] Returns an array of User objects
     //  */
-    /*
-    public function findByExampleField($value)
+    
+    public function findWithoutLeague()
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+        //$qb = $this->createQueryBuilder('u');
+        return $this->getEntityManager()->createQuery(
+            'SELECT u
+            FROM App\Entity\User u
+            WHERE u.id NOT IN (
+                SELECT us.id 
+                FROM App\Entity\User us 
+                INNER JOIN App\Entity\League l WITH l.responsible = us
+            )'
+        )->getResult()
         ;
+        // dd($req);
+        // return $qb
+        //     ->Where($qb->expr()->notIn('u.id', $req))
+        //     ->orderBy('u.id', 'ASC')
+        //     ->setMaxResults(10)
+        //     ->getQuery()
+        //     ->getResult()
+        // ;
     }
-    */
+    
 
     /*
     public function findOneBySomeField($value): ?User

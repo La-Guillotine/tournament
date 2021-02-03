@@ -9,21 +9,14 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('stadium_index') }}">Stades</a>
                 </li>
-                
-                {% if app.user and is_granted("ROLE_ADMIN") %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Ligues
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ path('league_index') }}">Liste</a>
-                            {# <li><a class="dropdown-item" href="{{ path('league_show', { id: app.user.league.id }) }}">Ma ligue</a></li> #}
-                            <hr class="dropdown-divider">
-                            <a class="dropdown-item" href="{{ path('league_new') }}">Nouvelle ligue</a>
-                        </div>
-                    </li>
-                {% endif %}
 
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('league_index') }}">Ligues</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('club_index') }}">Clubs</a>
+                </li>
+                
                 {% if not app.user %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
