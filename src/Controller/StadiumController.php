@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Exception;
 use App\Entity\Stadium;
 use App\Form\StadiumType;
 use App\Service\FileUploader;
@@ -48,22 +49,29 @@ class StadiumController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             
+            try{
+                $picture = $request->files->get('stadium')['picture'];
+                //dd($picture);
+                //sauvegarde de l'image grâce au service FileUploader
+                $fileName = $this->fileUploader->upload($picture, 'stadium');
+                    
+                $stadium->setPicture($fileName);
 
-            $picture = $request->files->get('stadium')['picture'];
-            //dd($picture);
-            //sauvegarde de l'image grâce au service FileUploader
-            $fileName = $this->fileUploader->upload($picture);
-                
-            $stadium->setPicture($fileName);
+                $this->entityManager->persist($stadium);
+                $this->entityManager->flush();
 
-            $this->entityManager->persist($stadium);
-            $this->entityManager->flush();
+                $this->addFlash(
+                    "success",
+                    "Le Stade a bien été ajouté"
+                );
 
-            $this->addFlash(
-                "success",
-                "Le Stade a bien été ajouté"
-            );
-
+            
+            }catch(Exception $e){
+                $this->addFlash(
+                    "danger",
+                    $e
+                );
+            }
             return $this->redirectToRoute('stadium_index');
         }
 
@@ -96,9 +104,9 @@ class StadiumController extends AbstractController
 
             $picture = $request->files->get('stadium')['picture'];
             if($picture !== null){
-                $this->fileUploader->removeUpload($stadium->getPicture());
+                $this->fileUploader->removeUpload($stadium->getPicture(), 'stadium');
                 //sauvegarde de l'image grâce au service FileUploader
-                $fileName = $this->fileUploader->upload($picture);
+                $fileName = $this->fileUploader->upload($picture, 'stadium');
                     
                 $stadium->setPicture($fileName);
             }
@@ -121,7 +129,7 @@ class StadiumController extends AbstractController
     public function delete(Request $request, Stadium $stadium): Response
     {
         if ($this->isCsrfTokenValid('delete'.$stadium->getId(), $request->request->get('_token'))) {
-            $this->fileUploader->removeUpload($stadium->getPicture());
+            $this->fileUploader->removeUpload($stadium->getPicture(), 'stadium');
             $this->entityManager->remove($stadium);
             $this->entityManager->flush();
         }

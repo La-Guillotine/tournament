@@ -6,7 +6,7 @@
     <div class="card container-fluid">
         <div class="row justify-content-center align-items-center">
             <div class="col col-md-8 col-sm-12">
-                <img src="{{ asset('uploads/')}}{{ stadium.picture }}" class="img-fluid" alt="{{stadium.name}}">
+                <img src="{{ asset('uploads/stadium/')}}{{ stadium.picture }}" class="img-fluid" alt="{{stadium.name}}">
             </div>
             <div class="card-body col col-md-4 col-sm-12">
                 <h3 class="card-title">{{ stadium.name }}</h3>
@@ -16,7 +16,7 @@
                     {% if stadium.club %}
                         <p>
                             <b>Club : </b><br/>
-                            {{ stadium.club }}
+                            <a class="card-link" href="{{ path('club_show', { 'id':  stadium.club.id }) }}">{{ stadium.club.name }}</a>
                         </p>
                     {% endif %}
                     <div>

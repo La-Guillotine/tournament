@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -24,7 +25,10 @@ class ClubType extends AbstractType
             ])
             ->add('acronym', TextType::class, [
                 'label' => 'Acronyme',
-                'required' => true
+                'required' => true,
+                'constraints' => [
+                    new Length(['max' => 4])
+                ]
             ])
             ->add('logo', FileType::class, [
                 'label' => 'Logo du club',

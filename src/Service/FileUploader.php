@@ -13,18 +13,18 @@ class FileUploader
         $this->targetDirectory = $targetDirectory;
     }
 
-    public function upload(UploadedFile $file)
+    public function upload(UploadedFile $file, string $folder)
     {
         $fileName = md5(uniqid()).'.'.$file->guessExtension();
 
-        $file->move($this->getTargetDirectory(), $fileName);
+        $file->move($this->getTargetDirectory().'/'.$folder, $fileName);
 
         return $fileName;
     }
 
-    public function removeUpload($file)
+    public function removeUpload(string $file, string $folder)
     {
-        $file = $this->getTargetDirectory() . '/' . $file;
+        $file = $this->getTargetDirectory() . '/' .$folder. $file;
         if (file_exists($file)) {
             unlink($file);
         }

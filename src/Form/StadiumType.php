@@ -16,22 +16,24 @@ class StadiumType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                "label" => "Nom du stade"
+                "label" => "Nom du stade",
+                "required" => true
             ])
             ->add('picture', DropzoneType::class, [
                 'label' => 'Image du stade',
-                'required' => false,
+                'required' => true,
                 'mapped' => false,
                 'constraints' => [
                     new File([
-                        'maxSize' => '1024k',
+                        'maxSize' => '2048k',
                         'mimeTypes' => ['image/jpeg', 'image/png', 'image/svg'],
                         'mimeTypesMessage' => 'Veuillez renseigner une image au format (.jpg, .jpeg, .png ou .svg)'
                     ])
                 ]
             ])
             ->add('address', TextType::class, [
-                "label" => "Adresse"
+                "label" => "Adresse",
+                "required" => true
             ])
         ;
     }

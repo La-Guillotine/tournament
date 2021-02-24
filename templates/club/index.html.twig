@@ -13,7 +13,7 @@
         <div class="row align-items-center justify-content-around">
         {% for club in clubs %}
             <div class="card col col-md-3 col-sm-6 align-items-center">
-                <img src="{{ asset('uploads/logo')}}{{ club.logo }}" class=" img-fluid card-img-top" alt="{{club.name}}">
+                <img src="{{ asset('uploads/logo/')}}{{ club.logo }}" class=" img-fluid card-img-top" alt="{{club.name}}">
                 <div class="card-body">
                     <h5 class="card-title">{{ club.name }}</h5>
                     <p class="card-text">
@@ -24,7 +24,7 @@
                     </p>
                     <p>
                         <b>Responsable : </b>
-                        {{ club.secretary.first_name }}
+                        {{ club.secretary.getFullName }}
                     </p>
                     <a href="{{ path('club_show', {'id': club.id}) }}" class="btn btn-outline-info">Voir plus</a>
                     {% if is_granted("ROLE_ADMIN") %}

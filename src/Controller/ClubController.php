@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Exception;
 use App\Entity\Club;
 use App\Form\ClubType;
 use App\Service\FileUploader;
@@ -47,7 +48,7 @@ class ClubController extends AbstractController
     /**
      * @Route("/new", name="club_new", methods={"GET","POST"})
      */
-    public function new(Request $request,UserRepository $userRepository): Response
+    public function new(Request $request,UserRepository $userRepository, LeagueRepository $leagueRepository): Response
     {
         $users = $userRepository->findWithoutLeague();
         $club = new Club();
@@ -57,6 +58,19 @@ class ClubController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
+            $leagueCurrentUser = $leagueRepository->findOneBy(
+                ['responsible' => $this->getUser()]
+            );
+
+            $logo = $request->files->get('club')['logo'];
+            //dd($logo);
+            //sauvegarde de l'image grâce au service FileUploader
+            $fileName = $this->fileUploader->upload($logo, 'logo');
+                
+            $club->setLeague($leagueCurrentUser);
+            $club->setLogo($fileName);
+
             $this->entityManager->persist($club);
             $this->entityManager->flush();
 
