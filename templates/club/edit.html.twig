@@ -4,10 +4,10 @@
 
 {% block body %}
     <h1>Edit Club</h1>
-
+    
     {{ include('club/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
 
-    <a href="{{ path('club_index') }}">Liste des clubs</a>
+    <a class="btn btn-outline-primary mt-1" href="{{ path('club_index') }}">Liste des clubs</a>
 
     {{ include('club/_delete_form.html.twig') }}
 {% endblock %}
