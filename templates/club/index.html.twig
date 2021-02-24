@@ -27,7 +27,7 @@
                         {{ club.secretary.getFullName }}
                     </p>
                     <a href="{{ path('club_show', {'id': club.id}) }}" class="btn btn-outline-info">Voir plus</a>
-                    {% if is_granted("ROLE_ADMIN") %}
+                    {% if club.secretary == app.user %}
                         <a href="{{ path('club_edit', {'id': club.id}) }}" class="btn btn-outline-secondary">Modifier</a>
                     {% endif %}
                 </div>

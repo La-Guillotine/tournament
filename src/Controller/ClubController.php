@@ -101,12 +101,25 @@ class ClubController extends AbstractController
     /**
      * @Route("/{id}/edit", name="club_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Club $club): Response
+    public function edit(Request $request, Club $club, UserRepository $userRepository): Response
     {
-        $form = $this->createForm(ClubType::class, $club);
+        $users = $userRepository->findWithoutLeague();
+        array_push($users, $this->getUser());
+        $form = $this->createForm(ClubType::class, $club,[
+            'users' => $users
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $picture = $request->files->get('club')['logo'];
+            if($picture !== null){
+                $this->fileUploader->removeUpload($club->getLogo(), 'logo');
+                //sauvegarde de l'image grâce au service FileUploader
+                $fileName = $this->fileUploader->upload($picture, 'logo');
+                    
+                $club->setLogo($fileName);
+            }
+
             $this->entityManager->flush();
 
             return $this->redirectToRoute('club_index');

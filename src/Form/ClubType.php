@@ -13,9 +13,16 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 class ClubType extends AbstractType
 {
+    private $authorization;
+    public function __construct(AuthorizationChecker $authorizationChecker)
+    {
+    $this->authorization = $authorizationChecker;
+    }
+    
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -54,12 +61,15 @@ class ClubType extends AbstractType
                 'class' => Stadium::class,
                 'choice_label' => 'name'
             ])
-            ->add('secretary',EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'fullName',
-                'choices' => $options['users']
-            ])
         ;
+            if($this->authorization->isGranted('ROLE_ADMIN')){
+                $builder->add('secretary',EntityType::class, [
+                    'class' => User::class,
+                    'choice_label' => 'fullName',
+                    'choices' => $options['users']
+                ]);
+            }
+            
     }
 
     public function configureOptions(OptionsResolver $resolver)
