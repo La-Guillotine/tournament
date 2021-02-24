@@ -122,6 +122,8 @@ class ClubController extends AbstractController
 
             $this->entityManager->flush();
 
+            $this->addFlash('success', "Le club a bien été mise à jour");
+
             return $this->redirectToRoute('club_index');
         }
 
@@ -139,6 +141,8 @@ class ClubController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$club->getId(), $request->request->get('_token'))) {
             $this->entityManager->remove($club);
             $this->entityManager->flush();
+
+            $this->addFlash('success', "Le club a bien été supprimé");
         }
 
         return $this->redirectToRoute('club_index');

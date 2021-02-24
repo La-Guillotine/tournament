@@ -29,7 +29,7 @@ class LeagueController extends AbstractController
 
     /**
      * @Route("/new", name="league_new", methods={"GET","POST"})
-     * @IsGranted("ROLE_ADMIN", statusCode=404, message="Accès interdit")
+     * @IsGranted("ROLE_ADMIN", statusCode=403, message="Accès interdit")
      */
     public function new(Request $request): Response
     {
@@ -77,6 +77,8 @@ class LeagueController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+
+            $this->addFlash('success', "La ligue à bien été mise à jour");
 
             return $this->redirectToRoute('league_index');
         }
