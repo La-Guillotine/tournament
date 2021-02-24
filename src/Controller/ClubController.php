@@ -104,7 +104,7 @@ class ClubController extends AbstractController
     public function edit(Request $request, Club $club, UserRepository $userRepository): Response
     {
         $users = $userRepository->findWithoutLeague();
-        array_push($users, $this->getUser());
+        array_push($users, $club->getSecretary());
         $form = $this->createForm(ClubType::class, $club,[
             'users' => $users
         ]);

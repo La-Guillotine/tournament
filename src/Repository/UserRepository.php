@@ -8,6 +8,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -46,23 +47,21 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $this->getEntityManager()->createQuery(
             'SELECT u
             FROM App\Entity\User u
-            WHERE u.id NOT IN (
+            WHERE u.roles LIKE :roles
+            AND u.id NOT IN (
                 SELECT us.id 
                 FROM App\Entity\User us 
                 INNER JOIN App\Entity\League l WITH l.responsible = us
+            )
+            AND u.id NOT IN (
+                SELECT uc.id
+                FROM App\Entity\User uc
+                INNER JOIN App\Entity\Club c WITH c.secretary = uc
             )'
-        )->getResult()
-        ;
-        // dd($req);
-        // return $qb
-        //     ->Where($qb->expr()->notIn('u.id', $req))
-        //     ->orderBy('u.id', 'ASC')
-        //     ->setMaxResults(10)
-        //     ->getQuery()
-        //     ->getResult()
-        // ;
+        )
+        ->setParameter("roles", '\'%ROLE_ADMIN%\'')
+        ->getResult();
     }
-    
 
     /*
     public function findOneBySomeField($value): ?User
