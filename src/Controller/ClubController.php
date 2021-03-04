@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -47,6 +48,7 @@ class ClubController extends AbstractController
 
     /**
      * @Route("/new", name="club_new", methods={"GET","POST"})
+     * @IsGranted("ROLE_USER", statusCode=403, message="Accès interdit")
      */
     public function new(Request $request,UserRepository $userRepository, LeagueRepository $leagueRepository): Response
     {
@@ -100,6 +102,7 @@ class ClubController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="club_edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_USER", statusCode=403, message="Accès interdit")
      */
     public function edit(Request $request, Club $club, UserRepository $userRepository): Response
     {
@@ -135,6 +138,7 @@ class ClubController extends AbstractController
 
     /**
      * @Route("/{id}", name="club_delete", methods={"DELETE"})
+     * @IsGranted("ROLE_USER", statusCode=403, message="Accès interdit")
      */
     public function delete(Request $request, Club $club): Response
     {
