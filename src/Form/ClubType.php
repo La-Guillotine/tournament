@@ -44,7 +44,7 @@ class ClubType extends AbstractType
                 'constraints' => [
                     new File([
                         'maxSize' => '1024k',
-                        'mimeTypes' => ['image/jpeg', 'image/png', 'image/svg'],
+                        'mimeTypes' => ['image/*'],
                         'mimeTypesMessage' => 'Veuillez renseigner une image au format (.jpg, .jpeg, .png ou .svg)'
                     ])
                 ]
@@ -61,15 +61,13 @@ class ClubType extends AbstractType
                 'class' => Stadium::class,
                 'choice_label' => 'name'
             ])
+            ->add('secretary',EntityType::class, [
+                'class' => User::class,
+                'label' => "Secrétaire",
+                'choice_label' => 'fullName',
+                'choices' => $options['users']
+            ]);
         ;
-            if($this->authorization->isGranted('ROLE_ADMIN')){
-                $builder->add('secretary',EntityType::class, [
-                    'class' => User::class,
-                    'choice_label' => 'fullName',
-                    'choices' => $options['users']
-                ]);
-            }
-            
     }
 
     public function configureOptions(OptionsResolver $resolver)

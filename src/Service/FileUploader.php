@@ -2,6 +2,7 @@
 // src/Service/FileUploader.php
 namespace App\Service;
 
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileUploader
@@ -28,6 +29,16 @@ class FileUploader
         if (file_exists($file)) {
             unlink($file);
         }
+    }
+
+    public function uploadImage(File $file, string $folder): string
+    {   
+        $newFilename = md5(uniqid()).'.'.$file->guessExtension();
+        $file->move(
+            $this->getTargetDirectory().'/'.$folder,
+            $newFilename
+        );
+        return $newFilename;
     }
 
     public function getTargetDirectory()
