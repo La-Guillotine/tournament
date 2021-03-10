@@ -3,18 +3,41 @@
 {% block title %}Club{% endblock %}
 
 {% block body %}
-    <h1>Club</h1>
+    
+    <div class="container">
+        <div class="row justify-content-around">
+            <div class="col col-md-5 col-sm-10 order-2">
+                <img src="{{ asset('uploads/logo/') }}{{ club.logo }}"  class="img-fluid mw-75" alt="logo du club" />
+            </div>
+            <div class="col col-md-5 col-sm-10 order-1">
+                <h1>{{ club.name }}</h1>
+                <p class="mt-4">
+                    Sigle du club : {{ club.acronym }}<br/>
+                    Adresse du club : {{ club.address }}<br/>
+
+                    <a target="_new" href="{{ club.website }}"> Lien vers le site web</a>
+                </p>
+                <p>
+                    <b>Ligue :</b> <a href="{{ path('league_show',{ 'id': club.league.id }) }}"> {{ club.league.name }}</a>
+                </p>
+                <p>
+                    <b>Secrétaire :</b> {{ club.secretary.fullName }}
+                </p>
+                <p>
+                    <b>Tournois :</b><br/>
+                    {# {% for tournament in club.tournaments %}
+                        <a class="card-link">{{ tournament.name }}</a><br/>
+                    {% else %}
+                        Aucun
+                    {% endfor %} #}
+                        
+                </p>
+            </div>
+        </div>
+    </div>
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ club.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ club.name }}</td>
-            </tr>
             <tr>
                 <th>Acronym</th>
                 <td>{{ club.acronym }}</td>
@@ -42,9 +65,11 @@
         </tbody>
     </table>
 
-    <a href="{{ path('club_index') }}">back to list</a>
+    <a class="btn btn-outline-primary" href="{{ path('club_index') }}">Liste des Clubs</a>
 
-    <a href="{{ path('club_edit', {'id': club.id}) }}">edit</a>
+    {% if app.user is same as(club.secretary) or is_granted("ROLE_ADMIN") %}
+        <a class="btn btn-outline-secondary mt-1" href="{{ path('club_edit', {'id': club.id}) }}">Modifier</a>
+        {{ include('club/_delete_form.html.twig') }}
+    {% endif %}
 
-    {{ include('club/_delete_form.html.twig') }}
 {% endblock %}
