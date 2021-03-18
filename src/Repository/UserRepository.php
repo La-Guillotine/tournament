@@ -47,7 +47,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $this->getEntityManager()->createQuery(
             'SELECT u
             FROM App\Entity\User u
-            WHERE u.roles LIKE :roles
+            WHERE u.roles NOT LIKE :roles
             AND u.id NOT IN (
                 SELECT us.id 
                 FROM App\Entity\User us 
@@ -59,7 +59,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                 INNER JOIN App\Entity\Club c WITH c.secretary = uc
             )'
         )
-        ->setParameter("roles", '\'%ROLE_ADMIN%\'')
+        ->setParameter("roles", '[\"%ROLE_ADMIN%\"]')
         ->getResult();
     }
 

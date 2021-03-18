@@ -48,12 +48,6 @@ class Club
     private $website;
 
     /**
-     * @ORM\OneToOne(targetEntity=Stadium::class, inversedBy="club", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $stadium;
-
-    /**
      * @ORM\ManyToOne(targetEntity=League::class, inversedBy="clubs")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -69,6 +63,12 @@ class Club
      * @ORM\OneToMany(targetEntity=Inscription::class, mappedBy="club", orphanRemoval=true)
      */
     private $inscriptions;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Stadium::class, inversedBy="clubs")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $stadium;
 
     public function __construct()
     {

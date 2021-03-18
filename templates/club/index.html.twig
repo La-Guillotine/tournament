@@ -3,7 +3,7 @@
 {% block title %}Club index{% endblock %}
 
 {% block body %}
-    {% if league %}
+    {% if is_granted("ROLE_USER") and (app.user in users) %}
         <a class="btn btn-outline-success m-2" href="{{ path('club_new') }}">Nouveau club</a>
     {% endif %}
     
@@ -13,7 +13,9 @@
         <div class="row align-items-center justify-content-around">
         {% for club in clubs %}
             <div class="card col col-md-3 col-sm-6 align-items-center">
-                <img src="{{ asset('uploads/logo/')}}{{ club.logo }}" class=" img-fluid card-img-top" alt="{{club.name}}">
+                <div class="mw-75 mh-50">
+                    <img src="{{ asset('uploads/logo/')}}{{ club.logo }}" class="img-fluid card-img-top" alt="{{club.name}}">
+                </div>
                 <div class="card-body">
                     <h5 class="card-title">{{ club.name }}</h5>
                     <p class="card-text">

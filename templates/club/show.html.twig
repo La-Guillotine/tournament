@@ -36,35 +36,6 @@
         </div>
     </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Acronym</th>
-                <td>{{ club.acronym }}</td>
-            </tr>
-            <tr>
-                <th>Logo</th>
-                <td>{{ club.logo }}</td>
-            </tr>
-            <tr>
-                <th>Website</th>
-                <td>{{ club.website }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ club.createdAt ? club.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ club.updatedAt ? club.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Address</th>
-                <td>{{ club.address }}</td>
-            </tr>
-        </tbody>
-    </table>
-
     <a class="btn btn-outline-primary" href="{{ path('club_index') }}">Liste des Clubs</a>
 
     {% if app.user is same as(club.secretary) or is_granted("ROLE_ADMIN") %}

@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -21,7 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class ClubController extends AbstractController
 {
-    private EntityManagerInterface $manager;
+    private EntityManagerInterface $entityManager;
     private FileUploader $fileUploader;
 
     public function __construct(EntityManagerInterface $manager, FileUploader $fileUploader)
@@ -33,44 +34,39 @@ class ClubController extends AbstractController
     /**
      * @Route("/", name="club_index", methods={"GET"})
      */
-    public function index(ClubRepository $clubRepository, LeagueRepository $leagueRepository): Response
+    public function index(ClubRepository $clubRepository, UserRepository $userRepository): Response
     {
-        $leagueCurrentUser = $leagueRepository->findOneBy(
-            ['responsible' => $this->getUser()]
-        );
-        // $userWithLeague = $userRepository->findWithLeague($this->getUser()->getId());
+        $usersWithoutClubsAndLeague = $userRepository->findWithoutLeague();
         
         return $this->render('club/index.html.twig', [
             'clubs' => $clubRepository->findAll(),
-            'league' => $leagueCurrentUser
+            'users' => $usersWithoutClubsAndLeague
         ]);
     }
 
     /**
      * @Route("/new", name="club_new", methods={"GET","POST"})
-     * @IsGranted("ROLE_USER", statusCode=403, message="Accès interdit")
+     * @Security("is_granted('ROLE_USER') and (user in userRepository.findWithoutLeague())", statusCode=403, message="Accès interdit")
      */
     public function new(Request $request,UserRepository $userRepository, LeagueRepository $leagueRepository): Response
     {
-        $users = $userRepository->findWithoutLeague();
+        // $users = $userRepository->findWithoutLeague();
         $club = new Club();
-        $form = $this->createForm(ClubType::class, $club, [
-            'users' => $users
-        ]);
+        $form = $this->createForm(ClubType::class, $club);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             
-            $leagueCurrentUser = $leagueRepository->findOneBy(
-                ['responsible' => $this->getUser()]
-            );
+            // $leagueCurrentUser = $leagueRepository->findOneBy(
+            //     ['responsible' => $this->getUser()]
+            // );
 
             $logo = $request->files->get('club')['logo'];
             //dd($logo);
             //sauvegarde de l'image grâce au service FileUploader
             $fileName = $this->fileUploader->upload($logo, 'logo');
                 
-            $club->setLeague($leagueCurrentUser);
+            $club->setSecretary($this->getUser());
             $club->setLogo($fileName);
 
             $this->entityManager->persist($club);
@@ -102,15 +98,11 @@ class ClubController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="club_edit", methods={"GET","POST"})
-     * @IsGranted("ROLE_USER", statusCode=403, message="Accès interdit")
+     * @Security("is_granted('ROLE_ADMIN') or club.getSecretary() == user", statusCode=403, message="Accès interdit")
      */
-    public function edit(Request $request, Club $club, UserRepository $userRepository): Response
+    public function edit(Request $request, Club $club): Response
     {
-        $users = $userRepository->findWithoutLeague();
-        array_push($users, $club->getSecretary());
-        $form = $this->createForm(ClubType::class, $club,[
-            'users' => $users
-        ]);
+        $form = $this->createForm(ClubType::class, $club);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -138,7 +130,7 @@ class ClubController extends AbstractController
 
     /**
      * @Route("/{id}", name="club_delete", methods={"DELETE"})
-     * @IsGranted("ROLE_USER", statusCode=403, message="Accès interdit")
+     * @Security("is_granted('ROLE_ADMIN') or club.getSecretary() == user", statusCode=403, message="Accès interdit")
      */
     public function delete(Request $request, Club $club): Response
     {

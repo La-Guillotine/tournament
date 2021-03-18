@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Club;
 use App\Entity\User;
+use App\Entity\League;
 use App\Entity\Stadium;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -61,11 +62,10 @@ class ClubType extends AbstractType
                 'class' => Stadium::class,
                 'choice_label' => 'name'
             ])
-            ->add('secretary',EntityType::class, [
-                'class' => User::class,
-                'label' => "Secrétaire",
-                'choice_label' => 'fullName',
-                'choices' => $options['users']
+            ->add('league',EntityType::class, [
+                'class' => League::class,
+                'label' => "Ligue",
+                'choice_label' => 'name',
             ]);
         ;
     }
