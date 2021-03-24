@@ -105,6 +105,11 @@ class LeagueController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$league->getId(), $request->request->get('_token'))) {
             $this->entityManager->remove($league);
             $this->entityManager->flush();
+
+            $this->addFlash(
+                "success",
+                "Suppression réussie"
+            );
         }
 
         return $this->redirectToRoute('league_index');

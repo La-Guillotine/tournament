@@ -52,6 +52,11 @@ class TournamentController extends AbstractController
             $this->entityManager->persist($tournament);
             $this->entityManager->flush();
 
+            $this->addFlash(
+                "success",
+                "Le Tournoi a bien été ajouté"
+            );
+
             return $this->redirectToRoute('tournament_index');
         }
 
@@ -83,6 +88,11 @@ class TournamentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->flush();
 
+            $this->addFlash(
+                "success",
+                "Mise à jour effectuée avec succès"
+            );
+
             return $this->redirectToRoute('tournament_index');
         }
 
@@ -100,6 +110,11 @@ class TournamentController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$tournament->getId(), $request->request->get('_token'))) {
             $this->entityManager->remove($tournament);
             $this->entityManager->flush();
+
+            $this->addFlash(
+                "success",
+                "Suppression réussie"
+            );
         }
 
         return $this->redirectToRoute('tournament_index');

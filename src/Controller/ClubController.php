@@ -117,7 +117,7 @@ class ClubController extends AbstractController
 
             $this->entityManager->flush();
 
-            $this->addFlash('success', "Le club a bien été mise à jour");
+            $this->addFlash('success', "Mise à jour du club effectuée avec succès");
 
             return $this->redirectToRoute('club_index');
         }

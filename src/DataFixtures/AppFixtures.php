@@ -2,10 +2,13 @@
 
 namespace App\DataFixtures;
 
+use DateTime;
 use App\Entity\Club;
 use App\Entity\User;
 use App\Entity\League;
+use DateTimeImmutable;
 use App\Entity\Stadium;
+use App\Entity\Tournament;
 use App\Service\FileUploader;
 use Symfony\Component\Finder\Finder;
 use Doctrine\Persistence\ObjectManager;
@@ -532,6 +535,76 @@ class AppFixtures extends Fixture
         ;
         
         $manager->persist($clubUSC);
+
+        $manager->flush();
+
+        /**
+         * Ajout des Tournois
+         */
+        $tournamentNA = (new Tournament())
+            ->setTitle('Championnat des Lacs aquitains')
+            ->setDescription('Petit tournoi amical de pré-saison')
+            ->setLeague($leagueNA)
+            ->setStadium($stadiumFCGB)
+            ->setStartDate(new DateTimeImmutable("2021-05-14 00:00:00"))
+            ->setEndDate(new DateTime("2021-05-16 00:00:00"))
+            ->setNbMaxTeam(8)
+            ->setAgeCategory("juniors")
+        ;
+
+        $manager->persist($tournamentNA);
+
+        $tournamentOcc = (new Tournament())
+            ->setTitle('Tournoi annuel d\'Auch')
+            ->setDescription('Petit tournoi amical régional festif')
+            ->setLeague($leagueOcc)
+            ->setStadium($stadiumTFC)
+            ->setStartDate(new DateTimeImmutable("2021-06-12 00:00:00"))
+            ->setEndDate(new DateTime("2021-06-15 00:00:00"))
+            ->setNbMaxTeam(16)
+            ->setAgeCategory("séniors")
+        ;
+
+        $manager->persist($tournamentOcc);
+
+        $tournamentBre = (new Tournament())
+            ->setTitle('Festival de la ville close')
+            ->setDescription('Petit tournoi à but touristique et humanitaire')
+            ->setLeague($leagueBre)
+            ->setStadium($stadiumUSC)
+            ->setStartDate(new DateTimeImmutable("2021-04-07 00:00:00"))
+            ->setEndDate(new DateTime("2021-04-08 00:00:00"))
+            ->setNbMaxTeam(10)
+            ->setAgeCategory("vétérans")
+        ;
+
+        $manager->persist($tournamentBre);
+
+        $tournamentNor = (new Tournament())
+            ->setTitle('Tournoi d\'Omaha Beach')
+            ->setDescription('Tournoi de la commémoration du dbarquement de Normandie du 6 juin 1944')
+            ->setLeague($leagueNor)
+            ->setStadium($stadiumSRFC)
+            ->setStartDate(new DateTimeImmutable("2021-06-06 00:00:00"))
+            ->setEndDate(new DateTime("2021-06-09 00:00:00"))
+            ->setNbMaxTeam(32)
+            ->setAgeCategory("cadets")
+        ;
+
+        $manager->persist($tournamentNor);
+
+        $tournamentCor = (new Tournament())
+            ->setTitle('Tournoi de Beach-Soccer d\'Ajaccio')
+            ->setDescription('Petit tournoi chill sur la plage')
+            ->setLeague($leagueCor)
+            ->setStadium($stadiumPau)
+            ->setStartDate(new DateTimeImmutable("2021-08-02 00:00:00"))
+            ->setEndDate(new DateTime("2021-08-10 00:00:00"))
+            ->setNbMaxTeam(40)
+            ->setAgeCategory("cadets")
+        ;
+
+        $manager->persist($tournamentCor);
 
         $manager->flush();
 

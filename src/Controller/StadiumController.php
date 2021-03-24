@@ -113,6 +113,11 @@ class StadiumController extends AbstractController
            
             $this->entityManager->flush();
 
+            $this->addFlash(
+                "success",
+                "Mise à jour du stade effectuée avec succès"
+            );
+
             return $this->redirectToRoute('stadium_index');
         }
 
@@ -132,6 +137,11 @@ class StadiumController extends AbstractController
             $this->fileUploader->removeUpload($stadium->getPicture(), 'stadium');
             $this->entityManager->remove($stadium);
             $this->entityManager->flush();
+
+            $this->addFlash(
+                "success",
+                "Suppression réussie"
+            );
         }
 
         return $this->redirectToRoute('stadium_index');
