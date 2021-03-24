@@ -53,7 +53,7 @@ class AppFixtures extends Fixture
 
         // Responsable Nouvelle Aquitaine
         $userNA = (new User())
-            ->setEmail("responible.nouvelleaquitaine@gmail.com")
+            ->setEmail("responsible.nouvelleaquitaine@gmail.com")
             ->setTel("0557889996")
             ->setFirstName('Enzo')
             ->setLastName("Fonteneau")
@@ -69,7 +69,7 @@ class AppFixtures extends Fixture
 
         // Responsable Occitanie
         $userOcc = (new User())
-            ->setEmail("responible.occitanie@gmail.com")
+            ->setEmail("responsible.occitanie@gmail.com")
             ->setTel("0557889996")
             ->setFirstName('Alexandre')
             ->setLastName("Mazeau")
@@ -85,7 +85,7 @@ class AppFixtures extends Fixture
 
         // Responsable Bretagne
         $userBre = (new User())
-            ->setEmail("responible.bretagne@gmail.com")
+            ->setEmail("responsible.bretagne@gmail.com")
             ->setTel("0557889996")
             ->setFirstName('Nicolas')
             ->setLastName("Vanexem")
@@ -101,7 +101,7 @@ class AppFixtures extends Fixture
 
         // Responsable Normandie
         $userNor = (new User())
-            ->setEmail("responible.normandie@gmail.com")
+            ->setEmail("responsible.normandie@gmail.com")
             ->setTel("0557889996")
             ->setFirstName('Marvyn')
             ->setLastName("Aboulicam")
@@ -117,7 +117,7 @@ class AppFixtures extends Fixture
 
         // Responsable Corse
         $userCor = (new User())
-            ->setEmail("responible.corse@gmail.com")
+            ->setEmail("responsible.corse@gmail.com")
             ->setTel("0557889996")
             ->setFirstName('Antoine')
             ->setLastName("Bidaud")

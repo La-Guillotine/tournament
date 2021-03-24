@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tournament{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="card align-items-center">
+        <div class="card-body">
+            <h1 class="card-title">{{ tournament.title }}</h1>
+            <p class="card-text">
+                {{ tournament.description }}
+            </p>
+            <p class="card-text">
+                Nombre maximum d'équipes autorisées : {{ tournament.nbMaxTeam }}
+            </p>
+            
+            <p class="card-text">
+                Date de début du tournoi : 
+                <span>{{ tournament.startDate ? tournament.startDate|date('d-m-Y') : '' }}</span>
+            </p>
+            <p class="card-text">
+                Date de fin du tournoi :
+                <span>{{ tournament.endDate ? tournament.endDate|date('d-m-Y') : '' }}</span>
+            </p>
+            <p class="card-text">
+                Ce tournoi est se déroule au
+                <a class="card-link" href="{{ path('stadium_show', { 'id': tournament.stadium.id}) }}">{{ tournament.stadium.name }}</a>
+            </p>
+            <p class="card-text">
+                Ce tournoi est organisé par la
+                <a class="card-link" href="{{ path('league_show', { 'id': tournament.league.id}) }}">{{ tournament.league.name }}</a>
+            </p>
+            <p class="card-text">
+                Catégorie : {{ tournament.ageCategory }}
+            <p>
+            <div class="card">
+                <h2 class="card-header">Clubs participants</h2>
+                
+            </div>
+
+        </div>
+    </div>
+
+    <a class="btn btn-outline-primary mt-1" href="{{ path('tournament_index') }}">Liste des tournois</a>
+
+    {% if app.user is same as(tournament.league.responsible) %}
+        <a class="btn btn-outline-secondary mt-1" href="{{ path('tournament_edit', {'id': tournament.id}) }}">Modifier</a>
+        {{ include('tournament/_delete_form.html.twig') }}
+    {% endif %}
+</div>
+{% endblock %}

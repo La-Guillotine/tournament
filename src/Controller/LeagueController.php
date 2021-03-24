@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\League;
 use App\Form\LeagueType;
 use App\Repository\LeagueRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,6 +18,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class LeagueController extends AbstractController
 {
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(EntityManagerInterface $manager)
+    {
+        $this->entityManager = $manager;
+    }
+    
     /**
      * @Route("/", name="league_index", methods={"GET"})
      */
@@ -38,9 +46,8 @@ class LeagueController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($league);
-            $entityManager->flush();
+            $this->entityManager->persist($league);
+            $this->entityManager->flush();
 
             $this->addFlash(
                 "success",
@@ -76,7 +83,7 @@ class LeagueController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->entityManager->flush();
 
             $this->addFlash('success', "La ligue à bien été mise à jour");
 
@@ -96,9 +103,8 @@ class LeagueController extends AbstractController
     public function delete(Request $request, League $league): Response
     {
         if ($this->isCsrfTokenValid('delete'.$league->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($league);
-            $entityManager->flush();
+            $this->entityManager->remove($league);
+            $this->entityManager->flush();
         }
 
         return $this->redirectToRoute('league_index');

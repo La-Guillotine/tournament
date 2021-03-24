@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tournament index{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <h1>Les Tournois</h1>
+
+        {% if is_granted("ROLE_USER") and (app.user in users) %}
+            <a class="btn btn-outline-success m-2" href="{{ path('tournament_new') }}">Ajouter un tournoi</a>
+        {% endif %}
+
+        <div class="row align-items-center justify-content-around">
+        {% for tournament in tournaments %}
+            <div class="card col col-md-3 col-sm-6 align-items-center">
+                <div class="card-body">
+                    <h5 class="card-title">{{ tournament.title }}</h5>
+                    <p class="card-text">
+                        Ce tournoi est se déroule au
+                        <a class="card-link" href="{{ path('stadium_show', { 'id': tournament.stadium.id}) }}">{{ tournament.stadium.name }}</a>
+                    </p>
+                    <p class="card-text">
+                        Ce tournoi est organisé par la
+                        <a class="card-link" href="{{ path('league_show', { 'id': tournament.league.id}) }}">{{ tournament.league.name }}</a>
+                    </p>
+                    <p class="card-text">
+                        Catégorie : {{ tournament.ageCategory }}
+                    <p>
+                    <p>
+                        Date de début du tournoi : 
+                        <span>{{ tournament.startDate ? tournament.startDate|date('d-m-Y') : '' }}</span>
+                    </tr>
+
+                    <a href="{{ path('tournament_show', {'id': tournament.id}) }}" class="btn btn-outline-info mt-2">Voir plus</a>
+                    {% if app.user is same as(tournament.league.responsible) %}
+                        <a href="{{ path('tournament_edit', {'id': tournament.id}) }}" class="btn btn-outline-secondary mt-2">Modifier</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% else %}
+            <p>
+                Aucun tournoi trouvé
+            </p>
+        {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

@@ -60,7 +60,8 @@ class ClubType extends AbstractType
             ])
             ->add('stadium', EntityType::class, [
                 'class' => Stadium::class,
-                'choice_label' => 'name'
+                'choice_label' => 'name',
+                'label' => 'Stade'
             ])
             ->add('league',EntityType::class, [
                 'class' => League::class,

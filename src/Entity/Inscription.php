@@ -14,12 +14,6 @@ use App\Repository\InscriptionRepository;
 class Inscription
 {
     use TimestampableTrait;
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
 
     /**
      * @ORM\Column(type="string", length=20)
@@ -27,21 +21,18 @@ class Inscription
     private $status;
 
     /**
+     * @ORM\Id
      * @ORM\ManyToOne(targetEntity=Tournament::class, inversedBy="inscriptions")
      * @ORM\JoinColumn(nullable=false)
      */
     private $tournament;
 
     /**
+     * @ORM\Id
      * @ORM\ManyToOne(targetEntity=Club::class, inversedBy="inscriptions")
      * @ORM\JoinColumn(nullable=false)
      */
     private $club;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getStatus(): ?string
     {

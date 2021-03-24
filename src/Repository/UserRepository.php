@@ -3,12 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
+use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -63,15 +63,21 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         ->getResult();
     }
 
-    /*
-    public function findOneBySomeField($value): ?User
+    
+    public function getUsersWithLeague()
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $this->getEntityManager()->createQuery(
+            'SELECT u
+            FROM App\Entity\User u
+            WHERE u.roles NOT LIKE :roles
+            AND u.id IN (
+                SELECT us.id 
+                FROM App\Entity\User us 
+                INNER JOIN App\Entity\League l WITH l.responsible = us
+            )'
+        )
+        ->setParameter("roles", '[\"%ROLE_ADMIN%\"]')
+        ->getResult();
     }
-    */
+    
 }
