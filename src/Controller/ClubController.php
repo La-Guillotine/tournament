@@ -10,11 +10,12 @@ use App\Repository\ClubRepository;
 use App\Repository\UserRepository;
 use App\Repository\LeagueRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -34,12 +35,19 @@ class ClubController extends AbstractController
     /**
      * @Route("/", name="club_index", methods={"GET"})
      */
-    public function index(ClubRepository $clubRepository, UserRepository $userRepository): Response
+    public function index(Request $request, ClubRepository $clubRepository, UserRepository $userRepository, PaginatorInterface $paginator): Response
     {
         $usersWithoutClubsAndLeague = $userRepository->findWithoutLeague();
+
+        $donnees = $clubRepository->findAll();
+        $clubs = $paginator->paginate(
+            $donnees,
+            $request->query->getInt('page', 1), // Numéro de la page en cours, 1 par défaut
+            8
+        );
         
         return $this->render('club/index.html.twig', [
-            'clubs' => $clubRepository->findAll(),
+            'clubs' => $clubs,
             'users' => $usersWithoutClubsAndLeague
         ]);
     }

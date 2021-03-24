@@ -4,10 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Tournament;
 use App\Form\TournamentType;
-use App\Repository\LeagueRepository;
 use App\Repository\UserRepository;
+use App\Repository\LeagueRepository;
 use App\Repository\TournamentRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,10 +30,19 @@ class TournamentController extends AbstractController
     /**
      * @Route("/", name="tournament_index", methods={"GET"})
      */
-    public function index(TournamentRepository $tournamentRepository, UserRepository $userRepository): Response
+    public function index(Request $request, TournamentRepository $tournamentRepository, UserRepository $userRepository, PaginatorInterface $paginator): Response
     {
+        $donnees = $tournamentRepository->findAll();
+
+        // Pagination
+        $tournaments = $paginator->paginate(
+            $donnees, // on passe les données, ici les tournois
+            $request->query->getInt('page', 1), // Numéro de la page en cours, 1 par défaut
+            8
+        );
+
         return $this->render('tournament/index.html.twig', [
-            'tournaments' => $tournamentRepository->findAll(),
+            'tournaments' => $tournaments,
             'users' => $userRepository->getUsersWithLeague()
         ]);
     } 

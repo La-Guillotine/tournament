@@ -6,6 +6,7 @@ use App\Entity\League;
 use App\Form\LeagueType;
 use App\Repository\LeagueRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,10 +29,17 @@ class LeagueController extends AbstractController
     /**
      * @Route("/", name="league_index", methods={"GET"})
      */
-    public function index(LeagueRepository $leagueRepository): Response
+    public function index(Request $request, LeagueRepository $leagueRepository, PaginatorInterface $paginator): Response
     {
+        $donnees = $leagueRepository->findAll();
+        // Pagination
+        $leagues = $paginator->paginate(
+            $donnees, // On passe les données, ici les ligues
+            $request->query->getInt('page',1), // Numéro de la page en cours, 1 par défaut
+            4
+        );
         return $this->render('league/index.html.twig', [
-            'leagues' => $leagueRepository->findAll(),
+            'leagues' => $leagues,
         ]);
     }
 

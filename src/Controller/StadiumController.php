@@ -8,6 +8,7 @@ use App\Form\StadiumType;
 use App\Service\FileUploader;
 use App\Repository\StadiumRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,16 +31,24 @@ class StadiumController extends AbstractController
     /**
      * @Route("/", name="stadium_index", methods={"GET"})
      */
-    public function index(StadiumRepository $stadiumRepository): Response
+    public function index(Request $request, StadiumRepository $stadiumRepository, PaginatorInterface $paginator): Response
     {
+        $donnees = $stadiumRepository->findAll();
+
+        //Pagination
+        $stadiums = $paginator->paginate(
+            $donnees, // On passe les données, ici les stades
+            $request->query->getInt('page', 1), // Numéro de la page en cours, 1 par défaut
+            6
+        );
         return $this->render('stadium/index.html.twig', [
-            'stadiums' => $stadiumRepository->findAll(),
+            'stadiums' => $stadiums,
         ]);
     }
 
     /**
      * @Route("/new", name="stadium_new", methods={"GET","POST"})
-     * @IsGranted("ROLE_ADMIN", statusCode=404, message="Accès interdit")
+     * @IsGranted("ROLE_ADMIN", statusCode=403, message="Accès interdit")
      */
     public function new(Request $request): Response
     {
@@ -93,7 +102,7 @@ class StadiumController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="stadium_edit", methods={"GET","POST"})
-     * @IsGranted("ROLE_ADMIN", statusCode=404, message="Accès interdit")
+     * @IsGranted("ROLE_ADMIN", statusCode=403, message="Accès interdit")
      */
     public function edit(Request $request, Stadium $stadium): Response
     {
@@ -129,7 +138,7 @@ class StadiumController extends AbstractController
 
     /**
      * @Route("/{id}", name="stadium_delete", methods={"DELETE"})
-     * @IsGranted("ROLE_ADMIN", statusCode=404, message="Accès interdit")
+     * @IsGranted("ROLE_ADMIN", statusCode=403, message="Accès interdit")
      */
     public function delete(Request $request, Stadium $stadium): Response
     {
