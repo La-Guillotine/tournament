@@ -3,18 +3,62 @@
 {% block title %}Hello DefaultController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div class="container py-5">
+    <div class="justify-content-center">
+        <h1>Bienvenue sur le site ! </h1>
+        <p>
+            <span class="lead">Bienvenue sur <strong>Tournament</strong>, la future plateforme incontournable de gestions de tournois de football.<br/>
+            Ici, vous trouverez tout le nécessaire pour permettre à votre club / ligue de gérer ses tournois.</span>
+            <hr/>
+            
+            <strong>Vous êtes responsable d'une ligue ?</strong>
+            <ul class="mt-1">
+                <li><a class="card-link" href="{{ path('app_register') }}">Inscrivez-vous</a> sur le site</li>
+                <li>Contactez notre administrateur qui vous affectera à votre ligue</li>
+                <li>Connectez-vous</li>
+                <li>Modifiez au besoin 
+                {% if app.user %}
+                    <a class="card-link" href="{{ path('account_show', { 'id': app.user.id }) }}">vos informations</a>
+                {% else %} 
+                    vos informations
+                {% endif %}
+                ou celles de votre ligue.
+                <li>Allez dans la rubrique <a class="card-link" href="{{ path('tournament_index') }}">Tournois</a>
+                <li>Créez un tournoi</li>
+                <li>Ouvrez et fermez les inscriptions (Non disponible)</li>
+                <li>Validez les inscriptions au tournoi (Non disponible) ➔ envoi d'une notification par mail</li>
+            </ul>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+            <hr/>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/var/www/html/tournament/src/Controller/DefaultController.php'|file_link(0) }}">src/Controller/DefaultController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/var/www/html/tournament/templates/default/index.html.twig'|file_link(0) }}">templates/default/index.html.twig</a></code></li>
-    </ul>
+            <strong>Vous êtes secrétaire d'un club ?</strong>
+            <ul class="mt-1">
+                <li><a class="card-link" href="{{ path('app_register') }}">Inscrivez-vous</a> sur le site</li>
+                <li>Connectez-vous</li>
+                <li>Ajoutez votre <a class="card-link" href="{{ path('club_new') }}">Club</a> avec ses informations 
+                    (<a class="card-link ml-0" href="{{ path('league_index') }}">ligue</a>, 
+                    <a class="card-link ml-0" href="{{ path('stadium_index') }}">stade</a>, logo, etc ...)
+                </li>
+                <li>Allez dans la rubrique <a class="card-link" href="{{ path('tournament_index') }}">Tournois</a>
+                <li>Choisissez un tournoi et cliquez sur le bouton "S'Inscrire" (page détail du tournoi)</li>
+                <li class="text-weight-light">Consultez en temps réel le statut de votre candidature (Non disponible)</li>
+                <li class="text-weight-light">Recevez un mail en cas d'admission ou de refus (Non disponible)</li>
+            </ul>
+
+            <hr/>
+
+            <strong>Vous êtes un simple visiteur ?</strong> Pas de panique, le site est également pensé pour vous !<br/>
+            Vous pouvez consulter toutes les informations données par notre administrateur, les responsables de ligues et secrétaires de clubs.
+            <br/>
+            Cela comprend les <a class="card-link ml-0" href="{{ path('stadium_index') }}">stades</a>,
+            les <a class="card-link ml-0" href="{{ path('league_index') }}">ligues</a>,
+            les <a class="card-link ml-0" href="{{ path('club_index') }}">clubs</a> 
+            ainsi que les <a class="card-link ml-0" href="{{ path('tournament_index') }}">tournois</a>.
+
+            <hr/>
+
+            <span class="lead">Pour votre information, les stades et les ligues sont ajoutés au site par notre administrateur.</span>
+        </p>
+    </div>
 </div>
 {% endblock %}
