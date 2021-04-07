@@ -4,7 +4,7 @@
 
 {% block body %}
     
-    <div class="container">
+    <div class="container py-5">
         <div class="row justify-content-around">
             <div class="col col-md-5 col-sm-10 order-2">
                 <img src="{{ asset('uploads/logo/') }}{{ club.logo }}"  class="img-fluid mw-75" alt="logo du club" />
@@ -34,13 +34,13 @@
                 </p>
             </div>
         </div>
+        <div>
+            <a class="btn btn-outline-primary" href="{{ path('club_index') }}">Liste des Clubs</a>
+            {% if app.user is same as(club.secretary) or is_granted("ROLE_ADMIN") %}
+                <a class="btn btn-outline-secondary mt-1" href="{{ path('club_edit', {'id': club.id}) }}">Modifier</a>
+                {{ include('club/_delete_form.html.twig') }}
+            {% endif %}
+        </div>
     </div>
-
-    <a class="btn btn-outline-primary" href="{{ path('club_index') }}">Liste des Clubs</a>
-
-    {% if app.user is same as(club.secretary) or is_granted("ROLE_ADMIN") %}
-        <a class="btn btn-outline-secondary mt-1" href="{{ path('club_edit', {'id': club.id}) }}">Modifier</a>
-        {{ include('club/_delete_form.html.twig') }}
-    {% endif %}
 
 {% endblock %}

@@ -3,10 +3,10 @@
 {% block title %}Stadium{% endblock %}
 
 {% block body %}
-    <div class="card container-fluid">
+    <div class="card border-0 container py-5">
         <div class="row justify-content-center align-items-center">
             <div class="col col-md-8 col-sm-12">
-                <img src="{{ asset('uploads/stadium/')}}{{ stadium.picture }}" class="img-fluid" alt="{{stadium.name}}">
+                <img src="{{ asset('uploads/stadium/')}}{{ stadium.picture }}" class="img-fluid rounded" alt="{{stadium.name}}">
             </div>
             <div class="card-body col col-md-4 col-sm-12">
                 <h3 class="card-title">{{ stadium.name }}</h3>
@@ -33,12 +33,15 @@
                 </p>
             </div>
         </div>
+        <div>
+            <a class="btn btn-outline-primary mt-4" href="{{ path('stadium_index') }}">Liste des stades</a>
+            {% if is_granted("ROLE_ADMIN") %}
+                <a class="btn btn-outline-secondary" href="{{ path('stadium_edit', {'id': stadium.id}) }}">Modifier</a>
+                {{ include('stadium/_delete_form.html.twig') }}
+            {% endif %}
+        </div>
     </div>
 
-    <a class="btn btn-outline-primary" href="{{ path('stadium_index') }}">Liste des stades</a>
-    {% if is_granted("ROLE_ADMIN") %}
-        <a class="btn btn-outline-secondary" href="{{ path('stadium_edit', {'id': stadium.id}) }}">Modifier</a>
-        {{ include('stadium/_delete_form.html.twig') }}
-    {% endif %}
+    
     
 {% endblock %}

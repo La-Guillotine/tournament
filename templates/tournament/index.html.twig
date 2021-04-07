@@ -12,7 +12,7 @@
 
         <div class="row align-items-center justify-content-around">
         {% for tournament in tournaments %}
-            <div class="card col col-md-3 col-sm-6 align-items-center">
+            <div class="card mt-4">
                 <div class="card-body">
                     <h5 class="card-title">{{ tournament.title }}</h5>
                     <p class="card-text">
@@ -24,13 +24,16 @@
                         <a class="card-link" href="{{ path('league_show', { 'id': tournament.league.id}) }}">{{ tournament.league.name }}</a>
                     </p>
                     <p class="card-text">
-                        Catégorie : {{ tournament.ageCategory | capitalize }}
+                        Catégorie : {{ tournament.ageCategory|capitalize }}
                     <p>
                     <p>
                         Date de début du tournoi : 
                         <span>{{ tournament.startDate ? tournament.startDate|date('d-m-Y') : '' }}</span>
-                    </tr>
+                    </p>
+                    <p>
+                        Places restantes : <span class="text-info font-weight-bold">{{ tournament.nbMaxTeam - tournament.inscriptions|length }}</span> / {{ tournament.nbMaxTeam }}
 
+                    </p>
                     <a href="{{ path('tournament_show', {'id': tournament.id}) }}" class="btn btn-outline-info mt-2">Voir plus</a>
                     {% if app.user is same as(tournament.league.responsible) %}
                         <a href="{{ path('tournament_edit', {'id': tournament.id}) }}" class="btn btn-outline-secondary mt-2">Modifier</a>
