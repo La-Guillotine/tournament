@@ -3,6 +3,10 @@
 {% block title %}Accés interdit{% endblock %}
 
 {% block body %}
-    <h1>{{status_text}}</h1>
-    
+    <div class="container">
+        <h1>Accès interdit à la ressource demandée</h1>
+        <p>Vous n'avez pas les autorisations requises pour accéder au contenu de la page demandée</p>
+
+        <a class="btn btn-outline-primary" href="{{ path('home')}}">Page d'accueil</a>
+    </div>
 {% endblock %}
