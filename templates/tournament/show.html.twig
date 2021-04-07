@@ -5,6 +5,13 @@
 {% block body %}
 <div class="container-fluid">
     <div class="card align-items-center">
+        {% if app.user.club is defined and app.user.club not in clubsInscrits %}
+        <form class="mt-2 w-100" method="POST" action="{{ path('inscription_new', { 'tournamentId': tournament.id, 'clubId': app.user.club.id }) }}">
+            <button type="submit" class="btn btn-success w-100">
+                S'Inscrire à ce Tournoi
+            </button>
+        </form>
+        {% endif %}
         <div class="card-body">
             <h1 class="card-title">{{ tournament.title }}</h1>
             <p class="card-text">
@@ -31,11 +38,17 @@
                 <a class="card-link" href="{{ path('league_show', { 'id': tournament.league.id}) }}">{{ tournament.league.name }}</a>
             </p>
             <p class="card-text">
-                Catégorie : {{ tournament.ageCategory }}
+                Catégorie : {{ tournament.ageCategory | capitalize }}
             <p>
             <div class="card">
                 <h2 class="card-header">Clubs participants</h2>
-                
+                {% for inscription in tournament.inscriptions %}
+                    <p>
+                        <a class="card-link" href="{{ path('club_show',{ 'id': inscription.club.id }) }}" >{{ inscription.club.name }}</a>
+                    </p>
+                {% else %}
+                    <p> Aucun club n'est inscrit à ce tournoi</p>
+                {% endfor %}
             </div>
 
         </div>

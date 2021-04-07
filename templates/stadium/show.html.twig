@@ -13,16 +13,18 @@
                 <p class="card-text">
                     {{ stadium.address }}
                 
-                    {% if stadium.club %}
-                        <p>
-                            <b>Club : </b><br/>
-                            <a class="card-link" href="{{ path('club_show', { 'id':  stadium.club.id }) }}">{{ stadium.club.name }}</a>
-                        </p>
-                    {% endif %}
+                    <p>
+                        <b>Club(s) : </b><br/>
+                        {% for club in stadium.clubs %}
+                            <a class="card-link" href="{{ path('club_show', { 'id':  club.id }) }}">{{ club.name }}</a>
+                        {% else %}
+                            Aucun
+                        {% endfor %}
+                    </p>
                     <div>
                         <p><b>Tournois :</b><br/>
                             {% for tournament in stadium.tournaments %}
-                                <a class="card-link">{{ tournament.name }}</a><br/>
+                                <a class="card-link" href="{{ path('tournament_show', { 'id':tournament.id }) }}">{{ tournament.title }}</a><br/>
                             {% else %}
                                 Aucun
                             {% endfor %}

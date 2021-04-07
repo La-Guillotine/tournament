@@ -13,18 +13,18 @@
         <div class="row align-items-center justify-content-around">
         {% for tournament in tournaments %}
             <div class="card col col-md-3 col-sm-6 align-items-center">
-                <h5 class="card-header w-100">{{ tournament.title }}</h5>
                 <div class="card-body">
+                    <h5 class="card-title">{{ tournament.title }}</h5>
                     <p class="card-text">
                         Ce tournoi est se déroule au
                         <a class="card-link" href="{{ path('stadium_show', { 'id': tournament.stadium.id}) }}">{{ tournament.stadium.name }}</a>
                     </p>
                     <p class="card-text">
-                        Ce tournoi est organisé par la
+                        Ce tournoi est organisé par la <br/>
                         <a class="card-link" href="{{ path('league_show', { 'id': tournament.league.id}) }}">{{ tournament.league.name }}</a>
                     </p>
                     <p class="card-text">
-                        Catégorie : {{ tournament.ageCategory }}
+                        Catégorie : {{ tournament.ageCategory | capitalize }}
                     <p>
                     <p>
                         Date de début du tournoi : 

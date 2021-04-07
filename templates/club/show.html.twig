@@ -25,11 +25,11 @@
                 </p>
                 <p>
                     <b>Tournois :</b><br/>
-                    {# {% for tournament in club.tournaments %}
-                        <a class="card-link">{{ tournament.name }}</a><br/>
+                    {% for inscription in club.inscriptions %}
+                        <a class="card-link" href="{{ path('tournament_show', { 'id': inscription.tournament.id }) }}">{{ inscription.tournament.title }}</a><br/>
                     {% else %}
                         Aucun
-                    {% endfor %} #}
+                    {% endfor %}
                         
                 </p>
             </div>

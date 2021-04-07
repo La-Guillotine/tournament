@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Tournament;
 use App\Form\TournamentType;
+use App\Repository\InscriptionRepository;
 use App\Repository\UserRepository;
 use App\Repository\LeagueRepository;
 use App\Repository\TournamentRepository;
@@ -32,7 +33,11 @@ class TournamentController extends AbstractController
      */
     public function index(Request $request, TournamentRepository $tournamentRepository, UserRepository $userRepository, PaginatorInterface $paginator): Response
     {
-        $donnees = $tournamentRepository->findAll();
+        // Tournois sortis par date de début de la plus proche à la plus lointaine
+        $donnees = $tournamentRepository->findBy(
+            [],
+            ['start_date' => 'ASC']
+        );
 
         // Pagination
         $tournaments = $paginator->paginate(
@@ -79,10 +84,17 @@ class TournamentController extends AbstractController
     /**
      * @Route("/{id}", name="tournament_show", methods={"GET"})
      */
-    public function show(Tournament $tournament): Response
+    public function show(Tournament $tournament, InscriptionRepository $inscriptionRepository): Response
     {
+        $clubsInscrits = [];
+        $inscriptions = $inscriptionRepository->findBy(['tournament' => $tournament]);
+        foreach($inscriptions as $inscription){
+            array_push($clubsInscrits, $inscription->getClub());
+        }
+
         return $this->render('tournament/show.html.twig', [
             'tournament' => $tournament,
+            'clubsInscrits' => $clubsInscrits
         ]);
     }
 
