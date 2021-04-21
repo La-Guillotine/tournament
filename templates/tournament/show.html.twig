@@ -4,12 +4,12 @@
 
 {% block body %}
 <div class="card border-0 justify-content-center align-items-center">
-        {% if app.user.club is defined and app.user.club not in clubsInscrits %}
-        <form class="mt-2 w-100" method="POST" action="{{ path('inscription_new', { 'tournamentId': tournament.id, 'clubId': app.user.club.id }) }}">
-            <button type="submit" class="btn btn-success w-100">
-                S'Inscrire à ce Tournoi
-            </button>
-        </form>
+        {% if app.user.club is not null and app.user.club not in clubsInscrits %}
+            <form class="mt-2 w-100" method="POST" action="{{ path('inscription_new', { 'tournamentId': tournament.id, 'clubId': app.user.club.id }) }}">
+                <button type="submit" class="btn btn-success w-100">
+                    S'Inscrire à ce Tournoi
+                </button>
+            </form>
         {% endif %}
         <div class="card-body">
             <h1 class="card-title">{{ tournament.title }}</h1>
